@@ -1,6 +1,6 @@
 # LinkPreview
 
-TODO: Write a gem description
+Link preview feature find open graph or normal meta tags.
 
 ## Installation
 
@@ -18,7 +18,29 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+```ruby
+   page = LinkPreview::Page.new('http://globoesporte.globo.com/futebol/times/corinthians/noticia/2013/06/sheik-cobra-responsabilidade-dos-companheiros-durante-folga.html')
+
+   # Return the title of the page
+   #
+   page.title
+
+   # Return the description of the page.
+   #
+   page.description
+
+   # Return all images from page
+   #
+   page.images
+
+   # Return the favicon link
+   #
+   page.favicon
+
+   # Return the uri
+   #
+   page.uri
+```
 
 ## Contributing
 
