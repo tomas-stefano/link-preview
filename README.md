@@ -21,6 +21,8 @@ Or install it yourself as:
 ```ruby
    page = LinkPreview::Page.new('http://globoesporte.globo.com/futebol/times/corinthians/noticia/2013/06/sheik-cobra-responsabilidade-dos-companheiros-durante-folga.html')
 
+   page.parse!
+
    # Return the title of the page
    #
    page.title
