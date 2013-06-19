@@ -42,6 +42,8 @@ Or install it yourself as:
    page.uri
 ```
 
+Obs.: The Page class is compatible with Active Model Serializers, :).
+
 ## Contributing
 
 1. Fork it
