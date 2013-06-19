@@ -6,7 +6,7 @@ Link preview feature find open graph or normal meta tags.
 
 Add this line to your application's Gemfile:
 
-    gem 'link_preview'
+    gem 'link-preview'
 
 And then execute:
 
@@ -14,7 +14,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install link_preview
+    $ gem install link-preview
 
 ## Usage
 

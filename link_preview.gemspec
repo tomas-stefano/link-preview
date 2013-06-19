@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'link_preview/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "link_preview"
+  spec.name          = "link-preview"
   spec.version       = LinkPreview::VERSION
   spec.authors       = ["Tomas D'Stefano"]
   spec.email         = ["tomas_stefano@successoft.com"]
