@@ -42,6 +42,9 @@ Or install it yourself as:
    # Return the uri
    #
    page.uri
+
+   # Return false if self contain error node (an exception occurs when try to get/parse the page).
+   page.valid?
 ```
 
 Obs.: The Page class is compatible with Active Model Serializers, :).
