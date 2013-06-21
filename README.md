@@ -46,6 +46,10 @@ Or install it yourself as:
 
 Obs.: The Page class is compatible with Active Model Serializers, :).
 
+## Extraction
+
+[This is an extraction from Palpiteros awesome product](http://palpiteros.com)
+
 ## Contributing
 
 1. Fork it
