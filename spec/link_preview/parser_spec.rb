@@ -17,20 +17,20 @@ module LinkPreview
     end
     let(:link_preview_parser) { Parser.new('http://foobar.com') }
 
-    before  { HTTParty.stub(:get).and_return(html) }
+    before  { allow(HTTParty).to receive(:get).and_return(html) }
 
     describe '#title' do
       context 'when title is nil' do
         let(:html) { '<html><head></head><body><p>Hello World</p></body></html>' }
         subject { link_preview_parser.title }
 
-        it { should eq '' }
+        it { is_expected.to eq '' }
       end
 
       context 'when the page had title' do
         subject { link_preview_parser.title }
 
-        it { should eq 'Foobar' }
+        it { is_expected.to eq 'Foobar' }
       end
     end
 
@@ -38,7 +38,7 @@ module LinkPreview
       context 'when had favicon' do
         subject { link_preview_parser.favicon }
 
-        it { should eq 'http://foobar.com/favicon.ico' }
+        it { is_expected.to eq 'http://foobar.com/favicon.ico' }
       end
 
       context 'when had other implementation of favicon' do
@@ -56,7 +56,7 @@ module LinkPreview
         end
         subject { Parser.new('http://google.com').favicon }
 
-        it { should eq 'http://google.com/images/google_favicon_128.png' }
+        it { is_expected.to eq 'http://google.com/images/google_favicon_128.png' }
       end
 
       context 'when favicon is a link to other domain' do
@@ -74,14 +74,14 @@ module LinkPreview
         end
         subject { Parser.new('http://globoesporte.com').favicon }
 
-        it { should eq 'http://s.glbimg.com/es/ge/static/globoesporte/img/favicon.png' }
+        it { is_expected.to eq 'http://s.glbimg.com/es/ge/static/globoesporte/img/favicon.png' }
       end
 
       context 'when do not had favicon' do
         let(:html) { '<html><head></head><body><p>Hello World</p></body></html>' }
         subject    { link_preview_parser.favicon }
 
-        it { should eq '' }
+        it { is_expected.to eq '' }
       end
     end
 
@@ -102,7 +102,7 @@ module LinkPreview
           }
         end
 
-        it { should eq ['http://foobar.com/foo.png'] }
+        it { is_expected.to eq ['http://foobar.com/foo.png'] }
       end
 
       context 'when contain images from the request domain' do
@@ -121,7 +121,7 @@ module LinkPreview
           }
         end
 
-        it { should eq ['trello.com/foo.png'] }
+        it { is_expected.to eq ['trello.com/foo.png'] }
       end
 
       context 'when contain images from other domain' do
@@ -138,7 +138,7 @@ module LinkPreview
           }
         end
 
-        it { should eq ['http://youtube.com/foo.png'] }
+        it { is_expected.to eq ['http://youtube.com/foo.png'] }
       end
 
       context 'when contain images without src attribute' do
@@ -155,7 +155,7 @@ module LinkPreview
           }
         end
 
-        it { should eq [] }
+        it { is_expected.to eq [] }
       end
     end
 
@@ -176,14 +176,14 @@ module LinkPreview
         end
         subject { Parser.new('github.com').parse! }
 
-        it { should eq({ link: 'github.com', type: 'external', title: 'GitHub - Build software better, together.', favicon: 'github.com/favicon.ico', images: ['github.com/favicon.ico', 'https://a248.e.akamai.net/assets.github.com/images/network.png?1355422571'], description: ''}) }
+        it { is_expected.to eq({ link: 'github.com', type: 'external', title: 'GitHub - Build software better, together.', favicon: 'github.com/favicon.ico', images: ['github.com/favicon.ico', 'https://a248.e.akamai.net/assets.github.com/images/network.png?1355422571'], description: ''}) }
       end
 
       context 'when raises exception trying to access the page' do
         subject { link_preview_parser.parse! }
-        before { HTTParty.should_receive(:get).and_raise(Errno::ECONNREFUSED) }
+        before { expect(HTTParty).to receive(:get).and_raise(Errno::ECONNREFUSED) }
 
-        it { should eq({ error: 'Connection refused' }) }
+        it { is_expected.to eq({ error: 'Connection refused' }) }
       end
 
       context 'with open graph content' do
@@ -201,12 +201,23 @@ module LinkPreview
             </html>
           }
         end
-        subject { Parser.new('globoesporte.com') }
-        before { subject.parse! }
+        subject (:parser) { Parser.new('globoesporte.com') }
+        before { parser.parse! }
 
-        its([:title]) { should eq 'globoesporte.com' }
-        its([:description]) { should eq 'globoesporte.com a melhor cobertura sobre o Futebol.' }
-        its([:images]) { should eq ['http://s.glbimg.com/es/ge/static/globoesporte/img/logo-globoesporte-facebook.jpg'] }
+        describe '[:title]' do
+          subject { super()[:title] }
+          it { is_expected.to eq 'globoesporte.com' }
+        end
+
+        describe '[:description]' do
+          subject { super()[:description] }
+          it { is_expected.to eq 'globoesporte.com a melhor cobertura sobre o Futebol.' }
+        end
+
+        describe '[:images]' do
+          subject { super()[:images] }
+          it { is_expected.to eq ['http://s.glbimg.com/es/ge/static/globoesporte/img/logo-globoesporte-facebook.jpg'] }
+        end
       end
     end
 
@@ -216,13 +227,13 @@ module LinkPreview
       context 'when parse page' do
         before { subject[:link] = 'foo' }
 
-        it { should be_valid }
+        it { is_expected.to be_valid }
       end
 
       context 'when raises error parsing page' do
         before { subject[:error] = 'SSL_connect state=SSLv3 bad ecpoint' }
 
-        it { should_not be_valid }
+        it { is_expected.not_to be_valid }
       end
     end
   end
